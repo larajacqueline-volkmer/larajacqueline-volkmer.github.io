@@ -1,0 +1,153 @@
+/* ===== style.css (komplett) ===== */
+:root{
+  --brand:#6f4bb8; --brand-2:#8c6be3;
+  --hero-from:#e6d6ef; --hero-to:#ceb3e8;
+  --bg:#f5f2f7; --surface:#fff; --text:#2a2333; --muted:#6d5d7f; --border:#e6e0ee;
+  --radius:14px; --shadow:0 8px 28px rgba(23,16,36,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);line-height:1.6;
+  font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+}
+h1,h2,h3{font-family:"Rajdhani",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;line-height:1.15;margin:0 0 .25rem}
+h1{font-size:clamp(1.8rem,2.7vw,2.6rem);font-weight:700}
+h2{font-size:clamp(1.4rem,2vw,1.8rem);font-weight:700}
+p{margin:.5rem 0 0;color:var(--muted)}
+a{color:var(--brand);text-decoration:underline transparent}
+a:hover{text-decoration-color:var(--brand)}
+img{max-width:100%;height:auto;display:block}
+
+/* Skip-Link */
+.skip-link{position:absolute;left:-9999px;top:auto;overflow:hidden}
+.skip-link:focus{left:1rem;top:1rem;background:#fff;color:#000;padding:.5rem .75rem;border-radius:.5rem;z-index:10000}
+
+/* Hero */
+.hero{background:linear-gradient(135deg,var(--hero-from),var(--hero-to));padding:48px 16px;margin:0 0 16px}
+.hero .hero-content-with-image{
+  max-width:1100px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center
+}
+.portrait-thumbnail{width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #fff;box-shadow:var(--shadow)}
+.subtitle{margin-top:2px}
+.cta-button{display:inline-flex;align-items:center;justify-content:center;padding:.7rem 1.05rem;border-radius:12px;background:var(--brand);color:#fff;text-decoration:none;font-weight:700;margin-top:.35rem;box-shadow:var(--shadow)}
+.cta-button:hover{filter:brightness(1.06)}
+
+/* Navigation */
+.main-nav{
+  max-width:1100px;margin:0 auto 18px;display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;padding:0 12px
+}
+.main-nav a{
+  background:var(--surface);color:var(--text);border-radius:12px;padding:.55rem .8rem;text-decoration:none;font-weight:700;border:1px solid var(--border)
+}
+.main-nav a:hover{box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.main-nav a.active{background:var(--brand);color:#fff}
+
+/* Layout-Container */
+.content,.container,.cards,.gallery-grid{max-width:1100px;margin:0 auto;padding:0 12px}
+main{padding-bottom:28px}
+#maincontent{display:block}
+
+/* Cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.card{background:var(--surface);padding:16px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow)}
+.card h3,.card h2{margin-top:.25rem}
+
+/* Galerie */
+.gallery-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.gallery-grid figure{margin:0;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.gallery-grid figcaption{padding:.6rem .75rem;color:var(--muted)}
+
+/* Formular */
+.form-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
+.form-row{display:flex;flex-direction:column;gap:.6rem;margin:.8rem 0}
+label{font-weight:600}
+input,textarea{width:100%;font:inherit;padding:.6rem .7rem;border-radius:10px;border:1px solid var(--border);background:#fff}
+textarea{min-height:140px;resize:vertical}
+button[type="submit"]{background:var(--brand);color:#fff;border:0;border-radius:10px;padding:.65rem 1rem;font-weight:700;cursor:pointer}
+
+/* Footer */
+footer{background:#5a367e;color:#fff;margin-top:28px;padding:18px 12px;text-align:center}
+footer a{color:#fff;text-underline-offset:3px}
+footer p{color:#fff;margin:.35rem 0}
+
+/* Lightbox (falls später genutzt) */
+.lb-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:9999}
+.lb-overlay.open{opacity:1;pointer-events:auto}
+.lb-img{max-width:92vw;max-height:82vh}
+.lb-caption{color:#fff;margin-top:.5rem;text-align:center}
+.lb-close{position:absolute;top:1rem;right:1rem;background:rgba(255,255,255,.15);border:0;color:#fff;font-size:2rem;line-height:1;padding:.25rem .5rem;border-radius:.5rem;cursor:pointer}
+
+@media (min-width:900px){
+  .hero{padding:56px 16px}
+  .portrait-thumbnail{width:130px;height:130px}
+}
+/* ===== Seite: KI-Bilder – Layout-Fix ===== */
+.page-bilder .hero .hero-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 pro Reihe auf Desktop */
+  gap: 1.25rem;
+}
+@media (max-width: 900px) {
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .gallery { grid-template-columns: 1fr; }
+}
+
+.gallery figure { margin: 0; }
+.gallery img { width: 100%; height: auto; display: block; border-radius: 12px; }
+
+/* ===== Fix: Hero auf KI-Bilder exakt mittig wie auf den anderen Seiten ===== */
+.page-bilder .hero .hero-inner{
+  width: min(100%, 920px);
+  margin-inline: auto;          /* zentriert den Block */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* Portrait, H1, Subtitle exakt mittig */
+  gap: .5rem;
+}
+
+.page-bilder .hero .portrait-thumbnail{
+  display: block;
+  margin: 0 auto 12px;          /* Portrait selbst mittig */
+}
+
+.page-bilder .hero h1,
+.page-bilder .hero .subtitle{
+  margin-left: 0;               /* evtl. vererbte Links-Ausrichtung neutralisieren */
+  text-align: center;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: 0; border: 0;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+/* About: Intro-Headline groß & responsiv */
+.about-intro{
+  font-size: clamp(2rem, 3.6vw, 3.2rem);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 1rem;
+}
+
+/* About: Bulletlist clean */
+.about-list{
+  margin: 0.5rem 0 0;
+  padding-left: 1.2rem;
+}
+.about-list li{
+  margin: 0.4rem 0;
+}
