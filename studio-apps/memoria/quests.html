@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="neon">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Quests • Memoria</title>
+
+  <meta name="theme-color" content="#0f0f1a">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png" type="image/png">
+
+  <link rel="stylesheet" href="style.css">
+  <script defer src="main.js"></script>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+
+  
+    <header class="app-header">
+      <div class="container header-flex">
+        <div class="user-level-box">
+          <div id="user-level-badge" class="user-level-badge">Level 1</div>
+          <div class="user-xp-bar">
+            <div id="user-xp-fill" class="user-xp-fill" style="width:0%"></div>
+          </div>
+          <div class="user-xp-text">
+            <span id="user-xp-current">0</span>/<span id="user-xp-next">100</span> XP
+          </div>
+        </div>
+      </div>
+    </header>
+    
+
+  <main class="container layout">
+    <aside class="sidebar">
+      
+        <div class="brand">
+          <div>
+            <div class="app-title">Memoria</div>
+            <div class="subtitle">Lernen • Fokus • PDF</div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Hauptnavigation">
+          <a href="index.html"><span>Dashboard</span></a>
+          <a href="learn.html"><span>Lernen</span></a>
+          <a href="decks.html"><span>Decks</span></a>
+          <a href="quests.html" aria-current="page"><span>Quests</span></a>
+          <a href="stats.html"><span>Stats</span></a>
+          <a href="pdf.html"><span>PDF</span></a>
+          <a href="settings.html"><span>Einstellungen</span></a>
+        </nav>
+    
+      <div class="cta">
+        <button class="btn secondary" onclick="location.href='learn.html'">Weiterlernen</button>
+        <button class="btn ghost" onclick="location.href='pdf.html'">PDF öffnen</button>
+      </div>
+    </aside>
+
+    <section class="page-content">
+      
+<header class="learn-header-row">
+  <div>
+    <h1>Quests</h1>
+    <p class="section-sub">Motivation sichtbar machen 🎮</p>
+  </div>
+</header>
+
+<div class="grid">
+  <article class="card">
+    <h2>Neue Quest</h2>
+    <label class="label" for="quest-title">Titel</label>
+    <input id="quest-title" class="input" placeholder="z.B. 20 Seiten Skript lesen"/>
+    <label class="label" for="quest-xp">XP</label>
+    <input id="quest-xp" class="input" type="number" min="1" step="1" value="10"/>
+    <div class="row" style="margin-top:.6rem;">
+      <button class="btn secondary" id="add-quest">Hinzufügen</button>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2>Warum Quests?</h2>
+    <p class="section-sub">
+      Kleine Aufgaben, sichtbarer Fortschritt.<br>
+      Du belohnst dich selbst für echtes Lernen statt für Fake-Produktivität.
+    </p>
+  </article>
+</div>
+
+<section class="card" style="margin-top:1rem;">
+  <h2>Deine Quests</h2>
+  <div id="quest-list"></div>
+</section>
+
+      
+      <footer class="app-footer">
+        Made by Lara Jacqueline Volkmer · Memoria ©
+      </footer>
+    
+    </section>
+  </main>
+
+  
+    <nav class="bottom-nav" aria-label="Mobile Navigation">
+      <a href="index.html"><span>Home</span></a>
+      <a href="learn.html"><span>Lernen</span></a>
+      <a href="pdf.html"><span>PDF</span></a>
+      <a href="stats.html"><span>Stats</span></a>
+      <a href="settings.html"><span>Settings</span></a>
+    </nav>
+    
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+    .catch(err => {
+      console.warn('SW registration failed', err);
+    });
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="neon">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Einstellungen • Memoria</title>
+
+  <meta name="theme-color" content="#0f0f1a">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon-192.png" type="image/png">
+
+  <link rel="stylesheet" href="style.css">
+  <script defer src="main.js"></script>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+
+  
+    <header class="app-header">
+      <div class="container header-flex">
+        <div class="user-level-box">
+          <div id="user-level-badge" class="user-level-badge">Level 1</div>
+          <div class="user-xp-bar">
+            <div id="user-xp-fill" class="user-xp-fill" style="width:0%"></div>
+          </div>
+          <div class="user-xp-text">
+            <span id="user-xp-current">0</span>/<span id="user-xp-next">100</span> XP
+          </div>
+        </div>
+      </div>
+    </header>
+    
+
+  <main class="container layout">
+    <aside class="sidebar">
+      
+        <div class="brand">
+          <div>
+            <div class="app-title">Memoria</div>
+            <div class="subtitle">Lernen • Fokus • PDF</div>
+          </div>
+        </div>
+
+        <nav class="nav" aria-label="Hauptnavigation">
+          <a href="index.html"><span>Dashboard</span></a>
+          <a href="learn.html"><span>Lernen</span></a>
+          <a href="decks.html"><span>Decks</span></a>
+          <a href="quests.html"><span>Quests</span></a>
+          <a href="stats.html"><span>Stats</span></a>
+          <a href="pdf.html"><span>PDF</span></a>
+          <a href="settings.html" aria-current="page"><span>Einstellungen</span></a>
+        </nav>
+    
+      <div class="cta">
+        <button class="btn secondary" onclick="location.href='learn.html'">Weiterlernen</button>
+        <button class="btn ghost" onclick="location.href='pdf.html'">PDF öffnen</button>
+      </div>
+    </aside>
+
+    <section class="page-content">
+      
+<header class="learn-header-row">
+  <div>
+    <h1>Einstellungen</h1>
+    <p class="section-sub">Dein Look. Deine Stimme. Dein Flow ⚙️</p>
+  </div>
+</header>
+
+<div class="grid">
+  <article class="card">
+    <h2>Farben</h2>
+    <p class="section-sub">Primärfarbe (Pink / Violet)</p>
+    <input type="color" id="color-primary" class="input" value="#9D2A83" style="max-width:120px;">
+    <p class="section-sub" style="margin-top:1rem;">Akzentfarbe (Cyan)</p>
+    <input type="color" id="color-accent" class="input" value="#66ccff" style="max-width:120px;">
+  </article>
+
+  <article class="card">
+    <h2>Theme</h2>
+    <p class="section-sub">Neon ist Standard 🔥</p>
+    <select id="theme-select" class="input" style="max-width:200px;">
+      <option value="neon">Neon</option>
+      <option value="light">Hell</option>
+      <option value="dark">Dunkel</option>
+    </select>
+  </article>
+
+  <article class="card">
+    <h2>Vorlese-Stimme</h2>
+    <p class="section-sub">Für PDF-Vorlesen / Lernkarten</p>
+    <select id="voice-select" class="input" style="max-width:260px;">
+      <option value="">System-Stimme</option>
+    </select>
+  </article>
+</div>
+
+<section class="card" style="margin-top:1rem;">
+  <div class="row" style="flex-wrap:wrap;">
+    <button class="btn secondary" id="save-settings">Speichern</button>
+    <button class="btn ghost" id="reset-settings">Zurücksetzen</button>
+  </div>
+</section>
+
+      
+      <footer class="app-footer">
+        Made by Lara Jacqueline Volkmer · Memoria ©
+      </footer>
+    
+    </section>
+  </main>
+
+  
+    <nav class="bottom-nav" aria-label="Mobile Navigation">
+      <a href="index.html"><span>Home</span></a>
+      <a href="learn.html"><span>Lernen</span></a>
+      <a href="pdf.html"><span>PDF</span></a>
+      <a href="stats.html"><span>Stats</span></a>
+      <a href="settings.html" aria-current="page"><span>Settings</span></a>
+    </nav>
+    
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js')
+    .catch(err => {
+      console.warn('SW registration failed', err);
+    });
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "Vicara",
+  "short_name": "Vicara",
+  "id": "./",
+  "scope": "./",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#13182a",
+  "theme_color": "#13182a",
+  "icons": [
+    {
+      "src": "vocara_192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "vocara_any_512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

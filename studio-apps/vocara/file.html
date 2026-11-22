@@ -1,0 +1,51 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vicara</title>
+
+  <!-- Font -->
+
+  <link rel="stylesheet" href="style.css?v=zip1" />
+  <link rel="manifest" href="manifest.json?v=zip1" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <script src="script.js?v=zip1" defer></script>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+  <div class="app-shell">
+    <div class="sidebar">
+  <div class="brand">
+    <img src="apple-touch-icon.png" alt="Logo" />
+    Vicara
+  </div>
+  <nav>
+    <a id="nav-test" class="nav-link" href="index.html">Vokabel‑Test</a>
+    <a id="nav-add" class="nav-link" href="add.html">Hinzufügen</a>
+    <a id="nav-list" class="nav-link" href="list.html">Liste</a>
+    <a id="nav-file" class="nav-link" href="file.html">Datei verbinden</a>
+  </nav>
+</div>
+<div class="topbar">
+  <a id="nav-test-top" class="nav-link" href="index.html">Vokabel‑Test</a>
+  <a id="nav-add-top" class="nav-link" href="add.html">Hinzufügen</a>
+  <a id="nav-list-top" class="nav-link" href="list.html">Liste</a>
+  <a id="nav-file-top" class="nav-link" href="file.html">Datei verbinden</a>
+</div>
+    <main>
+      <div class="page">
+        <h1>Datei verbinden</h1>
+        <p>Importiere oder exportiere deine Vokabeln als JSON.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <input id="importFileInput" type="file" accept="application/json" style="display:none" />
+          <button id="importJsonBtn" class="btn btn-ghost" type="button">Import JSON</button>
+          <button id="exportJsonBtn" class="btn btn-ghost" type="button">Export JSON</button>
+        </div>
+      </div>
+    </main>
+    <footer>© 2025 Lara Jacqueline Volkmer</footer>
+  </div>
+</body>
+</html>

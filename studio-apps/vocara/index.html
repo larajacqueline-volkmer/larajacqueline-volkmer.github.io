@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vicara</title>
+
+  <!-- Font -->
+
+  <link rel="stylesheet" href="style.css?v=zip1" />
+  <link rel="manifest" href="manifest.json?v=zip1" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <script src="script.js?v=zip1" defer></script>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+  <div class="app-shell">
+    <div class="sidebar">
+  <div class="brand">
+    <img src="apple-touch-icon.png" alt="Logo" />
+    Vicara
+  </div>
+  <nav>
+    <a id="nav-test" class="nav-link" href="index.html">Vokabel‑Test</a>
+    <a id="nav-add" class="nav-link" href="add.html">Hinzufügen</a>
+    <a id="nav-list" class="nav-link" href="list.html">Liste</a>
+    <a id="nav-file" class="nav-link" href="file.html">Datei verbinden</a>
+  </nav>
+</div>
+<div class="topbar">
+  <a id="nav-test-top" class="nav-link" href="index.html">Vokabel‑Test</a>
+  <a id="nav-add-top" class="nav-link" href="add.html">Hinzufügen</a>
+  <a id="nav-list-top" class="nav-link" href="list.html">Liste</a>
+  <a id="nav-file-top" class="nav-link" href="file.html">Datei verbinden</a>
+</div>
+    <main>
+      <div class="page">
+        <div style="max-width:1100px;margin:0 auto">
+          <label for="language-select">Sprache</label>
+          <select id="language-select"></select>
+        </div>
+
+        <section class="vocab-card-wrap">
+          <div class="vocab-card" aria-live="polite" title="Karte klicken zum Umdrehen">
+            <div class="card-inner">
+              <!-- injected by JS -->
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="rating-btn very-good" data-type="very-good">Sehr gut</button>
+            <button class="rating-btn good" data-type="good">Gut</button>
+            <button class="rating-btn medium" data-type="medium">Mittel</button>
+            <button class="rating-btn bad" data-type="bad">Schlecht</button>
+            <button id="next-card" class="btn btn-primary">Nächste Karte</button>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer>© 2025 Lara Jacqueline Volkmer</footer>
+  </div>
+</body>
+</html>

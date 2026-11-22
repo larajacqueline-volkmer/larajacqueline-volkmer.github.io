@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07040d">
+<meta name="description" content="Chess Strategic by LJV – interaktives Schachtraining mit lokaler KI, 3D/4D-Brett und Strategiebibliothek.">
+<meta name="application-name" content="Chess Strategic by LJV">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Chess Strategic">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="assets/favicon.svg">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="stylesheet" href="styles.css">
+<title>Chess Strategic · by LJV</title>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+<div class="ambient ambient-a"></div><div class="ambient ambient-b"></div><div class="starfield"></div>
+
+<header class="topbar">
+  <button id="brand" class="brand" aria-label="Chess Strategic Startseite">
+    <span class="brand-mark">♔</span>
+    <span><b>CHESS</b><small>STRATEGIC · BY LJV</small></span>
+  </button>
+  <nav class="desktop-nav">
+    <button data-view="play" class="active">Play</button>
+    <button data-view="training">Training</button>
+    <button data-view="learn">Strategies</button>
+    <button data-view="saved">Saved</button>
+    <button id="settings" aria-label="Einstellungen">⚙</button>
+  </nav>
+  <div class="top-actions">
+    <label class="top-search"><span>⌕</span><input id="globalSearch" placeholder="Search Strategies…" aria-label="Strategien suchen"></label>
+    <button id="installApp" class="install-btn hidden">Install</button>
+    <button class="profile-dot" aria-label="LJV profile">♙</button>
+  </div>
+</header>
+
+<main>
+<section id="play" class="view active">
+
+  <section class="desktop-hero">
+    <aside class="left-panel">
+      <div class="hero-emblem">✦</div>
+      <p class="eyebrow">AI CHESS · STRATEGY LAB</p>
+      <p class="hero-overline">Advanced interactive learning</p>
+      <h1>Master<br>Chess <span>Strategies</span><br>Like a Pro.</h1>
+      <p class="hero-text">200 Schachstrategien, interaktive Übungen, ein lokaler KI-Gegner und ein räumliches 3D/4D-Schachbrett.</p>
+      <div class="hero-actions">
+        <button data-view="training" class="primary">Training starten <span>→</span></button>
+        <button data-view="learn" class="secondary">Strategien entdecken</button>
+      </div>
+
+      <div class="popular">
+        <div class="paneltitle">BELIEBTE THEMEN</div>
+        <button class="topic" data-ex="sicilian"><span>♟</span><b>Eröffnungen</b><small>z. B. Sizilianische Verteidigung</small><i>›</i></button>
+        <button class="topic" data-view="learn"><span>◇</span><b>Taktiken</b><small>Gabeln, Fesselungen, Kombinationen</small><i>›</i></button>
+        <button class="topic" data-view="learn"><span>♕</span><b>Endspiele</b><small>König & Bauern, Turmendspiele</small><i>›</i></button>
+        <button class="topic" data-view="training"><span>✦</span><b>Lernpfade</b><small>Von Anfänger bis Fortgeschritten</small><i>›</i></button>
+      </div>
+
+      <div class="left-footer"><span>LOCAL-FIRST</span><span>NO API KEY</span><span>OFFLINE READY</span></div>
+    </aside>
+
+    <section class="center-panel">
+      <div class="arena-head">
+        <div><span class="live-dot"></span><span>LIVE CHESS ARENA</span></div>
+        <b>3D / 4D HOLOGRAPHIC BOARD</b>
+      </div>
+
+      <section class="board-card">
+        <div class="board-top-controls">
+          <div class="game-buttons">
+            <button id="new" class="primary small">+ Neues Spiel</button>
+            <button id="undo" class="icon-btn" aria-label="Rückgängig">↶</button>
+            <button id="redo" class="icon-btn" aria-label="Wiederholen">↷</button>
+            <button id="flip" class="icon-btn" aria-label="Brett drehen">⇅</button>
+          </div>
+          <div class="dimension-toggle">
+            <button id="d2">2D</button><button id="d3" class="active">3D</button><button id="d4">4D</button>
+          </div>
+        </div>
+
+        <div class="arena-shell">
+          <div id="stage">
+            <div class="holo-floor"></div>
+            <div class="depth-layer layer-c"></div><div class="depth-layer layer-b"></div><div class="depth-layer layer-a"></div>
+            <div class="holo-frame"><div class="board-underlight"></div><div id="board"></div></div>
+            <div class="scanline"></div>
+            <div id="capture"></div><div id="check"></div><div id="mate" aria-live="assertive">CHECKMATE</div>
+          </div>
+        </div>
+
+        <div class="control-panel">
+          <div class="control-group">
+            <span class="control-label">GEGNER</span>
+            <div class="segmented">
+              <button id="modeAI" class="choice active">🤖 KI-Gegner</button>
+              <button id="modeFree" class="choice">♙ 2 Spieler</button>
+            </div>
+          </div>
+          <div class="control-group">
+            <span class="control-label">DU SPIELST</span>
+            <div class="segmented">
+              <button id="humanWhite" class="choice active">♔ Weiß</button>
+              <button id="humanBlack" class="choice">♚ Schwarz</button>
+            </div>
+          </div>
+          <div class="control-group strength">
+            <span class="control-label">STÄRKE</span>
+            <select id="aiDepth"><option value="1">Easy</option><option value="2" selected>Standard</option><option value="3">Challenge</option></select>
+          </div>
+        </div>
+
+        <div class="board-toolbar">
+          <label>Rotation <input id="rot" type="range" min="-18" max="18" value="0"></label>
+          <label><input id="moves" type="checkbox" checked> Züge anzeigen</label>
+          <label><input id="sound" type="checkbox" checked> Sound</label>
+          <span id="aiStatus" class="ai-status">🤖 KI bereit · Du spielst Weiß</span>
+        </div>
+
+        <div class="action-row">
+          <button id="save" class="primary">Speichern</button>
+          <button id="pgn">PGN exportieren</button>
+          <button id="fen">FEN kopieren</button>
+        </div>
+      </section>
+
+      <section class="recommended">
+        <div class="section-line"><span><i class="live-dot"></i> EMPFOHLENE ÜBUNGEN</span><button data-view="training">Alle Übungen ansehen →</button></div>
+        <div class="exercise-mini-grid">
+          <article class="mini-ex" data-ex="sicilian"><span class="mini-icon">♜</span><div><b>Die Sizilianische<br>Verteidigung</b><small>1. e4 c5</small></div><i>▶</i></article>
+          <article class="mini-ex" data-ex="fork"><span class="mini-icon">⚔</span><div><b>Grundlegende<br>Taktiken</b><small>Gabeln & Fesselungen</small></div><i>▶</i></article>
+          <article class="mini-ex" data-ex="castle"><span class="mini-icon">♛</span><div><b>Königssicherheit</b><small>Rochade & Entwicklung</small></div><i>▶</i></article>
+          <article class="mini-ex" data-view="learn"><span class="mini-icon">◎</span><div><b>Positionsspiel</b><small>Langfristige Strategien</small></div><i>▶</i></article>
+        </div>
+      </section>
+    </section>
+
+    <aside class="right-panel">
+      <section class="coach-card">
+        <div class="paneltitle">AI COACH <b>LOCAL</b></div>
+        <div class="robot-stage">
+          <div class="robot-aura"></div>
+          <div class="robot">
+            <div class="robot-antenna"></div>
+            <div class="robot-head"><div class="eye"></div><div class="eye"></div><span>♞</span></div>
+            <div class="robot-body"></div>
+          </div>
+        </div>
+        <h2 id="coachTitle">Position bereit.</h2>
+        <p id="coach">Wähle eine Figur. Ich erkläre dir legale Züge und strategische Ideen.</p>
+        <button id="refresh" class="primary full">Coach aktualisieren</button>
+      </section>
+
+      <section class="analysis-card">
+        <div class="paneltitle">LIVE ANALYSIS <b id="eval">+0.0</b></div>
+        <div class="analysis-line"><span id="evalText">Ausgeglichen</span><strong id="status">Ready</strong></div>
+        <div class="meter"><i id="meter"></i></div>
+        <div class="stats"><span>Material<b id="material">+0</b></span><span>Moves<b id="legal">20</b></span><span>Phase<b id="phase">Opening</b></span></div>
+      </section>
+
+      <section class="history-card">
+        <div class="paneltitle">MOVE HISTORY <b id="count">0</b></div>
+        <ol id="history"></ol>
+        <p id="empty-history">Noch keine Züge.</p>
+      </section>
+
+      <section class="coach-tip">
+        <span>✦</span><div><b>Coach-Tipp</b><small>Prüfe vor jedem Zug zuerst Schachs, Schlagzüge und Drohungen.</small></div>
+      </section>
+    </aside>
+  </section>
+</section>
+
+<section id="training" class="view">
+  <div class="head"><p class="eyebrow">INTERACTIVE TRAINING</p><h2>Schach-Übungen</h2><p class="subhead">Konkrete Aufgaben – darunter die Sizilianische Eröffnung.</p></div>
+  <div id="exerciseGrid" class="exercise-grid"></div>
+</section>
+
+<section id="learn" class="view">
+  <div class="strategy-hero"><div><p class="eyebrow">STRATEGY LIBRARY</p><h2>200 Schachstrategien.</h2><p>Eröffnungen, Taktiken, Mittelspiel, Verteidigung und Endspiel.</p></div><div class="strategy-emblem"><b id="scount">200</b><span>STRATEGIES</span></div></div>
+  <div class="strategy-search"><span>⌕</span><input id="search" placeholder="Search Strategies…"><span>200+</span></div>
+  <div class="filter-row"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="opening">Openings</button><button class="filter" data-filter="tactics">Tactics</button><button class="filter" data-filter="endgame">Endgames</button><button class="filter" data-filter="defense">Defense</button><select id="category"><option value="all">Difficulty: All</option><option value="opening">opening</option><option value="tactics">tactics</option><option value="middlegame">middlegame</option><option value="endgame">endgame</option><option value="defense">defense</option><option value="planning">planning</option></select></div>
+  <div id="grid" class="grid"></div>
+</section>
+
+<section id="saved" class="view">
+  <div class="head"><p class="eyebrow">YOUR LIBRARY</p><h2>Gespeichert</h2></div>
+  <div class="savedgrid"><section class="card"><h3>Spiele</h3><div id="games"></div></section><section class="card"><h3>Favoriten</h3><div id="favs"></div></section></div>
+</section>
+</main>
+
+<nav class="mobile-nav">
+  <button data-view="play">♟<small>Play</small></button>
+  <button data-view="training">🎯<small>Training</small></button>
+  <button data-view="learn">✦<small>Strategies</small></button>
+  <button data-view="saved">▣<small>Saved</small></button>
+  <button id="msettings">⚙<small>Settings</small></button>
+</nav>
+
+<div id="modal" class="modal hidden"><div class="modalcard"><button class="close">×</button><p id="mcat" class="eyebrow"></p><h2 id="mtitle"></h2><p id="mq" class="question"></p><div class="box"><b>Antwort</b><p id="ma"></p></div><div class="box"><b>Erklärung</b><p id="me"></p></div><button id="mfav">☆ Favorit</button></div></div>
+<div id="settingsModal" class="modal hidden"><div class="modalcard"><button class="close">×</button><p class="eyebrow">SETTINGS</p><h2>Einstellungen</h2><label>Animationen <input id="anim" type="checkbox" checked></label><label>Sound <input id="ssound" type="checkbox" checked></label><label>Züge <input id="smoves" type="checkbox" checked></label><button id="clear" class="danger">Lokale Daten löschen</button></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="strategies.js"></script>
+<script src="app.js"></script>
+<script src="pwa.js"></script>
+</body>
+</html>

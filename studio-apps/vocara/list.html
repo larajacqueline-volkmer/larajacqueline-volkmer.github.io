@@ -1,0 +1,60 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vicara</title>
+
+  <!-- Font -->
+
+  <link rel="stylesheet" href="style.css?v=zip1" />
+  <link rel="manifest" href="manifest.json?v=zip1" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <script src="script.js?v=zip1" defer></script>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+  <div class="app-shell">
+    <div class="sidebar">
+  <div class="brand">
+    <img src="apple-touch-icon.png" alt="Logo" />
+    Vicara
+  </div>
+  <nav>
+    <a id="nav-test" class="nav-link" href="index.html">Vokabel‑Test</a>
+    <a id="nav-add" class="nav-link" href="add.html">Hinzufügen</a>
+    <a id="nav-list" class="nav-link" href="list.html">Liste</a>
+    <a id="nav-file" class="nav-link" href="file.html">Datei verbinden</a>
+  </nav>
+</div>
+<div class="topbar">
+  <a id="nav-test-top" class="nav-link" href="index.html">Vokabel‑Test</a>
+  <a id="nav-add-top" class="nav-link" href="add.html">Hinzufügen</a>
+  <a id="nav-list-top" class="nav-link" href="list.html">Liste</a>
+  <a id="nav-file-top" class="nav-link" href="file.html">Datei verbinden</a>
+</div>
+    <main>
+      <div class="page">
+        <h1>Liste</h1>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;max-width:1100px">
+          <div>
+            <label for="listLangFilter">Sprache</label>
+            <select id="listLangFilter"></select>
+          </div>
+          <div>
+            <label for="searchInput">Suchen</label>
+            <input id="searchInput" type="search" placeholder="Suchen..." />
+          </div>
+          <div style="display:flex;align-items:flex-end;gap:10px">
+            <button id="exportJsonBtn" class="btn btn-ghost" type="button">Export JSON</button>
+            <button id="clearAllBtn" class="btn btn-ghost" type="button">Alles löschen</button>
+          </div>
+        </div>
+        <div id="wordList" style="margin-top:14px;max-width:1100px"></div>
+      </div>
+    </main>
+    <footer>© 2025 Lara Jacqueline Volkmer</footer>
+  </div>
+</body>
+</html>
