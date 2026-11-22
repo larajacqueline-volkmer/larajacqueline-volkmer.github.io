@@ -30,3 +30,13 @@ Die sechs Apps liegen gemeinsam unter studio-apps im bestehenden Portfolio-Repos
 Mindmap Studio verwendet lokale Speicherung. Die umfangreichen Account-/Cloud-Erweiterungen der Quelle wurden nicht in diese neue App-Kopie übernommen. Memoria verwendet beim PDF-Öffnen den Viewer des Browsers. OCR und PDF-Zusammenfassung sind in dieser Kopie offen. Für beide Projekte gelten diese bewusst gewählten Minimalumfänge.
 
 Die Originalquellen in Google Drive und OneDrive wurden durch diesen Auftrag ausschließlich gelesen.
+
+## Ergänzung StudyTown 3D
+
+StudyTown 3D wurde als siebte App ergänzt. Der mobile Chromium-Test prüfte den Start der WebGL-Szene, die Modulauswahl, Speichern und Wiederladen von Notizen sowie Checklisten und den Offline-Start. Der vollständige Testlauf für alle sieben Apps war erfolgreich.
+
+Die Kamera-Initialisierung und defekten Bibliotheksverweise der Vorlage wurden korrigiert. Bibliotheken werden lokal geladen. Eine zusätzliche Modulauswahl macht Gebäude auf kleinen Displays erreichbar. Avatar-Platzhalter wurden durch einfache selbst erstellte Symbole ersetzt. Die App startet mit unbestätigten Modulfortschritten. Die älteren Modulnamen der Quelle müssen mit der aktuellen Prüfungsordnung abgeglichen werden.
+
+Chess fängt nun beschädigte gespeicherte Listen ab. Piano pausiert bei Wechsel der App in den Hintergrund.
+
+Ein eigenständiges AI-Chatbot-Projekt konnte aus den bisherigen Suchtreffern nicht eindeutig bestimmt werden. Ein Dateiname oder Projektlink wird für die Zuordnung benötigt. Die Brain App ist laut ihren Quelldaten ein lokaler Wissensbereich und wurde nicht als Chatbot veröffentlicht.

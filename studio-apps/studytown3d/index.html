@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StudyTown 3D</title>
+    <link rel="stylesheet" href="styles.css" />
+    
+  <link rel="manifest" href="manifest.webmanifest"><script defer src="./pwa-register.js"></script></head>
+  <body>
+    <header class="topbar" role="banner" aria-label="Hauptwerkzeugleiste">
+      <div class="brand">StudyTown</div>
+
+      <label class="ctrl">
+        <span>Avatar</span>
+        <select id="avatarSelect" aria-label="Avatar wählen">
+          <option value="robot">Robot</option>
+          <option value="girlAvatar">GirlAvatar</option>
+          <option value="penguin">Penguin</option>
+          <option value="car">Car</option>
+          <option value="princessPeach">Stern</option>
+          <option value="trophyPinkBall">TrophyPinkBall</option>
+          <option value="goldenTrophy">GoldenTrophy</option>
+        </select>
+      </label>
+
+      <label class="ctrl">
+        <input id="gridToggle" type="checkbox" />
+        <span>Grid</span>
+      </label>
+
+      <button id="resetBtn" class="btn" aria-label="Kamera zurücksetzen">Reset</button>
+      <button id="homeBtn" class="btn" aria-label="Weitwinkel-Ansicht">Home</button>
+
+      <button id="exportBtn" class="btn" aria-label="Daten exportieren">Export</button>
+      <button id="importBtn" class="btn" aria-label="Daten importieren">Import</button>
+      <input id="importFile" type="file" accept="application/json" hidden />
+    </header>
+
+    <label class="module-picker">Modul öffnen <select id="moduleSelect"><option value="">Modul wählen</option></select></label>
+    <main id="app" role="main" aria-label="3D Szene"></main>
+
+    <aside id="panel" class="panel" aria-label="Modul Panel" aria-live="polite">
+      <div class="panel-header">
+        <h2 id="pTitle">Modul</h2>
+        <button id="pClose" class="btn btn-ghost" aria-label="Panel schließen">×</button>
+      </div>
+      <div class="panel-body">
+        <label> Status
+          <select id="pStatus">
+            <option value="passed">Bestanden</option>
+            <option value="enrolled">Eingeschrieben</option>
+            <option value="todo">Noch nicht</option>
+          </select>
+        </label>
+
+        <label> Notizen
+          <textarea id="pNotes" rows="4" placeholder="Eigene Notizen…"></textarea>
+        </label>
+
+        <section class="checklist">
+          <h3>Checkliste</h3>
+          <div class="input-row">
+            <input id="pCheckInput" type="text" placeholder="Neuen Punkt hinzufügen…" />
+            <button id="pCheckAdd" class="btn">Hinzufügen</button>
+          </div>
+          <ul id="pChecks" class="list"></ul>
+        </section>
+
+        <section class="resources">
+          <h3>Ressourcen</h3>
+          <div class="res-col">
+            <h4>Skripte</h4>
+            <div class="input-row">
+              <input id="resScriptsInput" type="text" placeholder="Titel/URL/Notiz" />
+              <button data-cat="scripts" class="btn resAdd">Add</button>
+            </div>
+            <ul id="resScripts" class="list"></ul>
+          </div>
+          <div class="res-col">
+            <h4>Musterklausuren</h4>
+            <div class="input-row">
+              <input id="resExamsInput" type="text" placeholder="Titel/URL/Notiz" />
+              <button data-cat="exams" class="btn resAdd">Add</button>
+            </div>
+            <ul id="resExams" class="list"></ul>
+          </div>
+          <div class="res-col">
+            <h4>Videomaterial</h4>
+            <div class="input-row">
+              <input id="resVideosInput" type="text" placeholder="Titel/URL/Notiz" />
+              <button data-cat="videos" class="btn resAdd">Add</button>
+            </div>
+            <ul id="resVideos" class="list"></ul>
+          </div>
+          <div class="res-col">
+            <h4>Übungstests</h4>
+            <div class="input-row">
+              <input id="resTestsInput" type="text" placeholder="Titel/URL/Notiz" />
+              <button data-cat="tests" class="btn resAdd">Add</button>
+            </div>
+            <ul id="resTests" class="list"></ul>
+          </div>
+          <div class="res-col">
+            <h4>Merksätze</h4>
+            <div class="input-row">
+              <input id="resMemosInput" type="text" placeholder="Merksatz" />
+              <button data-cat="memos" class="btn resAdd">Add</button>
+            </div>
+            <ul id="resMemos" class="list"></ul>
+          </div>
+        </section>
+      </div>
+
+      <div class="panel-footer">
+        <button id="pSave" class="btn btn-primary">Speichern</button>
+      </div>
+    </aside>
+
+    <!-- Three.js (global, non-ESM) -->
+    <script src="vendor/three.min.js"></script>
+    <script src="vendor/OrbitControls.js"></script>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

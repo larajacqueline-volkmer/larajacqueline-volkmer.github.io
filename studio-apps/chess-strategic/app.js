@@ -1,8 +1,9 @@
+function readSavedArray(key){try{const data=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(data)?data:[]}catch{return []}}
 (()=>{"use strict";
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const P={K:"♔",Q:"♕",R:"♖",B:"♗",N:"♘",P:"♙",k:"♚",q:"♛",r:"♜",b:"♝",n:"♞",p:"♟"},V={p:1,n:3,b:3,r:5,q:9,k:0},F="abcdefgh";
 const START="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-const S={board:[],turn:"w",castling:"KQkq",ep:"-",half:0,full:1,h:[],future:[],sel:null,flip:false,three:true,four:false,rot:0,show:true,sound:true,fav:JSON.parse(localStorage.ljvFav||"[]"),games:JSON.parse(localStorage.ljvGames||"[]"),mode:"ai",human:"w",depth:2,aiThinking:false,exercise:null};
+const S={board:[],turn:"w",castling:"KQkq",ep:"-",half:0,full:1,h:[],future:[],sel:null,flip:false,three:true,four:false,rot:0,show:true,sound:true,fav:readSavedArray("ljvFav"),games:readSavedArray("ljvGames"),mode:"ai",human:"w",depth:2,aiThinking:false,exercise:null};
 const color=p=>p?(p===p.toUpperCase()?"w":"b"):null, enemy=c=>c==="w"?"b":"w", inside=(r,c)=>r>=0&&r<8&&c>=0&&c<8;
 function sq(r,c){return F[c]+(8-r)}
 function fenObj(f){let a=f.split(/\s+/),b=a[0].split("/").map(x=>{let r=[];for(let c of x)/[1-8]/.test(c)?r.push(...Array(+c).fill(null)):r.push(c);return r});return{board:b,turn:a[1],castling:a[2],ep:a[3],half:+a[4],full:+a[5]}}

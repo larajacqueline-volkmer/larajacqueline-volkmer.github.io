@@ -8,3 +8,5 @@
 * [Portal Run](./portal-run/) · Lara durch das Portal steuern und fallenden Blöcken ausweichen.
 * [Mindmap Studio](./mindmap/) · Gedanken als verbundene Knoten zeichnen und die Karte lokal weiterschreiben.
 * [Vicara](./vocara/) · Eigene Vokabeln erfassen und mit wendbaren Lernkarten üben.
+
+* [StudyTown 3D](./studytown3d/) · Module, Notizen und Checklisten in einer begehbaren Lernstadt.
