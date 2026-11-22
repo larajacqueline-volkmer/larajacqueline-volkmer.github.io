@@ -1,5 +1,5 @@
 const prefix = "ljv-portfolio-memoria-";
-const cacheName = prefix + "2c62598d63";
+const cacheName = prefix + "38a4e5de36";
 const assets = [
   "./decks.html",
   "./icon-192.png",
@@ -9,6 +9,7 @@ const assets = [
   "./main.js",
   "./manifest.webmanifest",
   "./pdf.html",
+  "./preview.webp",
   "./pwa-register.js",
   "./quests.html",
   "./settings.html",
