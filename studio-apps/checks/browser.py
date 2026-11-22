@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright
 from PIL import Image
 from io import BytesIO
 from pathlib import Path
-import json
+import json,shutil
 apps=['pianoflow','chess-strategic','portal-run','memoria','vocara','mindmap']
 def use(page,app):
  tap=lambda selector:page.locator(selector).first.tap(timeout=3000)
@@ -19,7 +19,7 @@ def use(page,app):
  if app=='mindmap':
   tap('#newNode');page.locator('#nodeTitle').fill('Entwurf');tap('#editor button');page.reload();assert page.locator('#nodeTitle').input_value()=='Entwurf';tap('#newNode');tap('#undo');assert page.evaluate("JSON.parse(localStorage.getItem('ljv-studio-map-v1')).nodes.length")==2
 with sync_playwright() as pw:
- br=pw.chromium.launch(args=['--no-sandbox'])
+ br=pw.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox'])
  failures=[]
  for a in apps:
   ctx=br.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True);p=ctx.new_page();p.set_default_timeout(4500);errors=[];p.on('pageerror',lambda e:errors.append(str(e)));p.on('dialog',lambda dialog:dialog.accept());url='http://127.0.0.1:8193/'+a+'/index.html'
