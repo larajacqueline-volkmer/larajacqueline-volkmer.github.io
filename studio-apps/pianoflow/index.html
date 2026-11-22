@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#070b18">
+<meta name="description" content="PianoFlow AI – visueller Klavierlehrer im Browser.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./assets/icon.svg">
+<link rel="stylesheet" href="./style.css">
+<title>PianoFlow AI</title>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">PF</div>
+      <div class="brand-copy"><strong>PianoFlow <em>AI</em></strong><span>SEHEN · HÖREN · SPIELEN</span></div>
+    </div>
+    <nav class="main-nav" aria-label="Hauptnavigation">
+      <button class="nav-item active" data-section="home">⌂ <span>Home</span></button>
+      <button class="nav-item" data-section="learn">♧ <span>Lernen</span></button>
+      <button class="nav-item" data-section="songs">♫ <span>Songs</span></button>
+      <button class="nav-item" data-section="analysis">◈ <span>Analyse</span></button>
+      <button class="nav-item" data-section="editor">▱ <span>Noteneditor</span></button>
+      <button class="nav-item" data-section="stats">▥ <span>Statistik</span></button>
+    </nav>
+    <div class="top-actions">
+      <button id="themeBtn" title="Darstellung">☼</button>
+      <button id="settingsBtn" title="Einstellungen">⚙</button>
+      <button id="fullscreenBtn" title="Vollbild">⛶</button>
+    </div>
+  </header>
+
+  <main class="workspace" id="workspace">
+    <aside class="left-sidebar">
+      <section class="side-panel">
+        <h2>Schnellstart</h2>
+        <button class="side-card selected" id="demoBtn"><span class="side-icon">♫</span><span><b>Demo-Song spielen</b><small>Beliebte Stücke direkt starten</small></span><i>›</i></button>
+        <button class="side-card" id="uploadBtn"><span class="side-icon">↥</span><span><b>Eigene Datei laden</b><small>MP3, WAV, M4A, OGG, FLAC</small></span><i>›</i></button>
+        <button class="side-card" id="freeBtn"><span class="side-icon">♬</span><span><b>Freies Spielen</b><small>Einfach loslegen</small></span><i>›</i></button>
+        <input id="audioFile" type="file" accept="audio/*" hidden>
+      </section>
+      <section class="side-panel">
+        <h2>Lernmodus</h2>
+        <button class="side-card active-mode" data-mode="falling"><span class="side-icon">▥</span><span><b>Falling Notes</b><small>Noten sehen und mitspielen</small></span><i>›</i></button>
+        <button class="side-card" data-mode="practice"><span class="side-icon">⌁</span><span><b>Übungsmodus</b><small>Tempo, Loop, schwierige Stellen</small></span><i>›</i></button>
+        <button class="side-card" data-mode="ear"><span class="side-icon">◖</span><span><b>Gehörtraining</b><small>Ton hören und erkennen</small></span><i>›</i></button>
+        <button class="side-card" data-mode="editor"><span class="side-icon">✎</span><span><b>Noteneditor</b><small>Noten bearbeiten und exportieren</small></span><i>›</i></button>
+      </section>
+    </aside>
+
+    <section class="center-column">
+      <section class="hero" id="hero">
+        <div class="hero-art" aria-hidden="true"><div class="sun-glow"></div><div class="waterline"></div><div class="skyline one"></div><div class="skyline two"></div><div class="palm palm-a"></div><div class="palm palm-b"></div><div class="hero-reflection"></div></div>
+        <div class="hero-content">
+          <div class="eyebrow">BROWSER-FIRST · KEIN KONTO</div>
+          <h1>Klavier lernen,<br><span>ohne Notenstress.</span></h1>
+          <p>Sehen · Hören · Spielen – direkt im Browser. PianoFlow zeigt dir, welche Taste du spielen sollst, wann sie kommt und wie du besser wirst.</p>
+          <div class="hero-chips"><span>◉ Echte Audio-Wiedergabe</span><span>◷ Tempo anpassen</span><span>▥ Fortschritt verfolgen</span><span>✦ KI-Hilfe</span></div>
+        </div>
+
+        <div class="floating-player panel">
+          <div class="track-main"><div class="track-cover" id="trackCover">♫</div><div><strong id="songTitle">River Flows in You</strong><small id="songMeta">Yiruma · Demo</small></div></div>
+          <button class="transport" id="prevBtn" aria-label="Vorheriger Song">◀</button>
+          <button class="play-btn" id="playBtn" aria-label="Wiedergabe">▶</button>
+          <button class="transport" id="nextBtn" aria-label="Nächster Song">▶</button>
+          <div class="player-time" id="time">0:00 / 0:12</div>
+          <input class="range-seek" id="seek" type="range" min="0" max="12" value="0" step="0.01" aria-label="Position">
+          <span class="speaker">◖</span>
+          <input class="range-vol" id="volume" type="range" min="0" max="1" value="0.75" step="0.01" aria-label="Lautstärke">
+          <select id="tempoSelect" aria-label="Tempo"><option value="0.5">50% Tempo</option><option value="0.75">75% Tempo</option><option value="1" selected>100% Tempo</option><option value="1.25">125% Tempo</option></select>
+        </div>
+      </section>
+
+      <section class="visualizer panel" id="visualizer">
+        <canvas id="noteCanvas" aria-label="Falling Notes Visualisierung"></canvas>
+        <div class="lane-grid" id="laneGrid"></div>
+        <div class="hit-line"></div>
+        <div class="note-label" id="nextNoteLabel">Nächste Taste · E</div>
+        <div class="piano" id="piano" aria-label="Virtuelles Piano"></div>
+      </section>
+
+      <section class="control-row">
+        <div class="control-card"><span class="control-icon">♩</span><div><b>Tempo</b><small id="tempoLabel">100%</small></div><input type="range" id="tempoSlider" min="25" max="125" value="100"></div>
+        <button class="control-card toggle-card" id="loopToggle"><span class="control-icon">↻</span><div><b>Loop</b><small id="loopLabel">A – B</small></div><span class="toggle-pill"></span></button>
+        <button class="control-card toggle-card" id="hardToggle"><span class="control-icon">☝</span><div><b>Schwierige Stellen</b><small id="hardLabel">Markieren</small></div><span class="toggle-pill"></span></button>
+        <button class="control-card toggle-card on" id="notesToggle"><span class="control-icon">◉</span><div><b>Noten anzeigen</b><small>Ein</small></div><span class="toggle-pill"></span></button>
+        <button class="control-card toggle-card on" id="aiToggle"><span class="control-icon">✦</span><div><b>KI-Hilfe</b><small id="aiLabel">Ein</small></div><span class="toggle-pill"></span></button>
+      </section>
+
+      <section class="below-grid">
+        <section class="panel progress-panel" id="statsPanel">
+          <div class="panel-title"><div><span class="eyebrow small">FORTSCHRITT</span><h2>Heute üben</h2></div><strong id="accuracyBig">0%</strong></div>
+          <div class="metric-grid"><div><small>Treffer</small><b id="hits">0</b></div><div><small>Fehler</small><b id="misses">0</b></div><div><small>Reaktionszeit</small><b id="reaction">—</b></div><div><small>Übungszeit</small><b id="practiceTime">0 min</b></div></div>
+        </section>
+        <section class="panel editor-panel" id="editorPanel"><div class="panel-title"><div><span class="eyebrow small">NOTENEDITOR</span><h2>Aktuelle Sequenz</h2></div><button id="exportJsonBtn" class="mini-btn">JSON</button><button id="exportMidiBtn" class="mini-btn">MIDI</button></div><div class="editor-actions"><button id="addNoteBtn">＋ Note</button><button id="clearNotesBtn">Leeren</button></div><div class="note-table-wrap"><table><thead><tr><th>#</th><th>Note</th><th>Start</th><th>Dauer</th><th></th></tr></thead><tbody id="noteTable"></tbody></table></div></section>
+      </section>
+    </section>
+
+    <aside class="right-sidebar">
+      <section class="panel song-panel" id="songsPanel">
+        <div class="tabs"><button class="tab active">Songs</button><button class="tab">Eigene Daten</button><button class="tab">Favoriten</button></div>
+        <input id="search" class="search" placeholder="⌕  Songs suchen..." autocomplete="off">
+        <div class="filters"><button class="filter active">Alle</button><button class="filter">Klassik</button><button class="filter">Pop</button><button class="filter">Film</button></div>
+        <div id="songList" class="song-list"></div>
+      </section>
+      <section class="panel analyse-panel" id="analysisPanel">
+        <div class="panel-title"><div><h2>Audio analysieren</h2></div></div>
+        <label class="dropzone" id="dropzone" for="audioFile"><span>↥</span><b>Audio-Datei hierher ziehen<br>oder klicken</b><small>MP3, WAV, M4A, OGG, FLAC</small></label>
+        <div class="analysis-status" id="fileStatus">Bereit für eine Datei.</div>
+        <div class="analysis-actions"><button id="analyseBtn" disabled>Audio analysieren</button><button id="useFileBtn" disabled>Als Song laden</button></div>
+      </section>
+    </aside>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+
+<div class="modal" id="settingsModal" aria-hidden="true">
+  <div class="modal-card">
+    <div class="modal-head"><div><span class="eyebrow small">PIANOFLOW</span><h2>Einstellungen</h2></div><button class="modal-close" type="button">×</button></div>
+    <div id="settingsContent" class="settings-content"></div>
+  </div>
+</div>
+<div class="modal" id="earModal" aria-hidden="true">
+  <div class="modal-card ear-card">
+    <div class="modal-head"><div><span class="eyebrow small">GEHÖRTRAINING</span><h2>Welchen Ton hörst du?</h2></div><button class="modal-close" type="button">×</button></div>
+    <p class="ear-help">Höre den Ton und wähle die passende Klaviertaste.</p>
+    <div class="ear-buttons" id="earButtons"><button type="button" data-m="60">C</button><button type="button" data-m="61">C#</button><button type="button" data-m="62">D</button><button type="button" data-m="63">D#</button><button type="button" data-m="64">E</button><button type="button" data-m="65">F</button><button type="button" data-m="66">F#</button><button type="button" data-m="67">G</button><button type="button" data-m="68">G#</button><button type="button" data-m="69">A</button><button type="button" data-m="70">A#</button><button type="button" data-m="71">H</button></div>
+  </div>
+</div>
+<audio id="audioPlayer" preload="metadata"></audio>
+<script src="./app.js"></script>
+</body>
+</html>

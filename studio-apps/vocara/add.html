@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vicara</title>
+
+  <!-- Font -->
+
+  <link rel="stylesheet" href="style.css?v=zip1" />
+  <link rel="manifest" href="manifest.json?v=zip1" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <script src="script.js?v=zip1" defer></script>
+<script defer src="./pwa-register.js"></script></head>
+<body>
+  <div class="app-shell">
+    <div class="sidebar">
+  <div class="brand">
+    <img src="apple-touch-icon.png" alt="Logo" />
+    Vicara
+  </div>
+  <nav>
+    <a id="nav-test" class="nav-link" href="index.html">Vokabel‑Test</a>
+    <a id="nav-add" class="nav-link" href="add.html">Hinzufügen</a>
+    <a id="nav-list" class="nav-link" href="list.html">Liste</a>
+    <a id="nav-file" class="nav-link" href="file.html">Datei verbinden</a>
+  </nav>
+</div>
+<div class="topbar">
+  <a id="nav-test-top" class="nav-link" href="index.html">Vokabel‑Test</a>
+  <a id="nav-add-top" class="nav-link" href="add.html">Hinzufügen</a>
+  <a id="nav-list-top" class="nav-link" href="list.html">Liste</a>
+  <a id="nav-file-top" class="nav-link" href="file.html">Datei verbinden</a>
+</div>
+    <main>
+      <div class="page">
+        <h1>Vokabel hinzufügen</h1>
+        <form id="add-word-form" class="card-like" style="max-width:1100px">
+          <label for="word-de">Deutsch</label>
+          <input id="word-de" type="text" placeholder="Deutsch..." />
+
+          <label for="word-foreign">Fremdsprache oder Abkürzungen</label>
+          <input id="word-foreign" type="text" placeholder="Fremdsprache oder Abkürzungen..." />
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+            <div>
+              <label for="language">Sprache</label>
+              <select id="language"></select>
+            </div>
+            <div>
+              <label for="difficulty">Schwierigkeit</label>
+              <select id="difficulty"></select>
+            </div>
+          </div>
+
+          <div style="margin-top:14px">
+            <button class="btn btn-primary" type="submit">Hinzufügen</button>
+          </div>
+        </form>
+
+        <h2 style="margin-top:28px">Aktuelle Vokabeln</h2>
+        <div id="wordListMini"></div>
+      </div>
+    </main>
+    <footer>© 2025 Lara Jacqueline Volkmer</footer>
+  </div>
+</body>
+</html>

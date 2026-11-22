@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#09051d">
+<title>Portal Run — Lara</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05020e;font-family:monospace;touch-action:none}
+body{display:flex;align-items:center;justify-content:center}
+#wrap{position:relative;height:100svh;max-height:100svh;aspect-ratio:9/16;max-width:100vw;background:#08041b;overflow:hidden}
+canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+#hud{position:absolute;inset:0;pointer-events:none;color:white;text-shadow:2px 2px #000}
+.hudtop{position:absolute;top:2.2%;left:4%;right:4%;display:flex;justify-content:space-between;align-items:flex-start;font-weight:900;font-size:clamp(11px,3.3vw,20px);letter-spacing:1px}
+#score{color:#ffd56b}
+#level{text-align:center;color:#fff}
+#lives{color:#ff5578}
+#bar{position:absolute;top:7%;left:17%;width:66%;height:2.1%;border:3px solid #07162d;border-radius:7px;background:#13203b;box-shadow:0 0 0 2px #67e7ff;overflow:hidden}
+#fill{height:100%;width:0%;background:linear-gradient(90deg,#ff3e7b,#ffd65a,#5dd9ff)}
+#hint{position:absolute;bottom:4%;left:4%;right:4%;text-align:center;font-size:clamp(10px,2.8vw,16px);color:#dff8ff;font-weight:900}
+#overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(4,2,15,.68);padding:9%;z-index:10}
+.panel{width:100%;border:4px solid #62e7ff;background:rgba(9,5,29,.94);box-shadow:0 0 25px #b72cff, inset 0 0 30px rgba(70,200,255,.15);padding:7%;text-align:center;color:#fff}
+.panel h1{margin:0 0 4%;font-size:clamp(23px,8vw,42px);color:#ffd65a}
+.panel p{font-size:clamp(11px,3.5vw,17px);line-height:1.45}
+button{border:3px solid #fff;background:#ff4f8a;color:#fff;padding:4% 8%;font:900 clamp(14px,4vw,20px) monospace;box-shadow:5px 5px #3a0f55;cursor:pointer}
+#touch{position:absolute;left:0;right:0;bottom:10%;height:28%;display:flex;z-index:5;pointer-events:auto}
+.touchzone{flex:1}
+#debug{position:absolute;top:11%;left:4%;font-size:10px;color:#fff;opacity:.55}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><script defer src="./pwa-register.js"></script></head>
+<body>
+<div id="wrap">
+<canvas id="game" width="432" height="768"></canvas>
+<div id="hud">
+  <div class="hudtop">
+    <div id="score">SCORE 000000</div>
+    <div id="level">LEVEL 1 / 100</div>
+    <div id="lives">♥ ♥ ♥</div>
+  </div>
+  <div id="bar"><div id="fill"></div></div>
+  <div id="hint">DRAG / TOUCH TO FLY • AVOID THE TETRIS BLOCKS</div>
+</div>
+<div id="touch"><div class="touchzone" id="leftZone"></div><div class="touchzone" id="rightZone"></div></div>
+<div id="overlay">
+  <div class="panel">
+    <h1>PORTAL RUN</h1>
+    <p>Fliege mit Lara durch das Portal.<br>Weiche den fallenden Blöcken aus und erreiche Level 100.</p>
+    <button id="start">START GAME</button>
+    <p style="font-size:10px;opacity:.65;margin-bottom:0">Mobile: Finger halten links/rechts oder direkt über das Spielfeld ziehen.</p>
+  </div>
+</div>
+</div>
+<script>
+const BG = "bg.webp";
+const SPRITE = "sprite.webp";
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+ctx.imageSmoothingEnabled=false;
+const bg=new Image(), avatar=new Image();
+bg.src=BG; avatar.src=SPRITE;
+
+const W=432,H=768;
+let running=false, score=0, level=1, lives=3, last=0, spawn=0, inv=0, gameTime=0;
+let player={x:115,y:390,w:118,h:92,vx:0};
+let obstacles=[], particles=[], keys={left:false,right:false};
+let bgScroll=0;
+
+const pieces=[
+  [[0,0],[1,0],[2,0],[1,1]], // T
+  [[0,0],[0,1],[0,2],[1,2]], // L
+  [[0,0],[1,0],[1,1],[2,1]], // Z
+  [[0,0],[1,0],[0,1],[1,1]], // O
+  [[0,0],[0,1],[0,2],[0,3]], // I
+];
+const pieceColors=['#ff4d65','#ffd24d','#4c9dff','#57e38b','#b06cff'];
+
+function reset(){
+  score=0;level=1;lives=3;obstacles=[];particles=[];gameTime=0;spawn=0;inv=0;
+  player.x=157; player.y=500; player.vx=0; bgScroll=0;
+  updateHUD();
+}
+function startGame(){
+  reset(); running=true; document.getElementById('overlay').style.display='none'; last=performance.now(); requestAnimationFrame(loop);
+}
+document.getElementById('start').onclick=startGame;
+
+function updateHUD(){
+  document.getElementById('score').textContent='SCORE '+String(Math.floor(score)).padStart(6,'0');
+  document.getElementById('level').textContent='LEVEL '+level+' / 100';
+  document.getElementById('lives').textContent='♥ '.repeat(lives).trim() || '—';
+  document.getElementById('fill').style.width=(level)+'%';
+}
+
+function spawnObstacle(){
+  const p=pieces[Math.floor(Math.random()*pieces.length)];
+  const size=20+Math.floor(Math.random()*7);
+  const ox=12+Math.random()*(W-90);
+  const speed=90+level*2.2+Math.random()*45;
+  obstacles.push({cells:p.map(a=>[a[0]*size,a[1]*size]),x:ox,y:-90,w:4*size,h:4*size,speed,color:pieceColors[Math.floor(Math.random()*pieceColors.length)]});
+}
+
+function drawPixelPiece(o){
+  for(const [dx,dy] of o.cells){
+    const x=o.x+dx,y=o.y+dy,s=(o.w/4);
+    ctx.fillStyle=o.color;ctx.fillRect(x,y,s,s);
+    ctx.strokeStyle='#101326';ctx.lineWidth=3;ctx.strokeRect(x+1,y+1,s-2,s-2);
+    ctx.fillStyle='rgba(255,255,255,.35)';ctx.fillRect(x+3,y+3,s-6,3);
+  }
+}
+
+function hit(a,b){
+  const ax=a.x+18, ay=a.y+18, aw=a.w-36, ah=a.h-28;
+  return ax<b.x+b.w*.75 && ax+aw>b.x && ay<b.y+b.h*.75 && ay+ah>b.y;
+}
+
+function burst(x,y){
+  for(let i=0;i<18;i++) particles.push({x,y,vx:(Math.random()-.5)*160,vy:(Math.random()-.5)*160,life:.55});
+}
+
+function drawBackground(dt){
+  // Use the supplied artwork as the complete level backdrop.
+  ctx.drawImage(bg,0,0,W,H);
+  // Subtle animated star layer gives the still image a game-like feel.
+  bgScroll=(bgScroll+dt*12)%H;
+  ctx.globalAlpha=.45;
+  for(let i=0;i<28;i++){
+    const x=(i*79+31)%W, y=(i*137+bgScroll)%H;
+    ctx.fillStyle='#fff';ctx.fillRect(x,y,2,2);
+  }
+  ctx.globalAlpha=1;
+}
+
+function drawAvatar(){
+  if(inv>0 && Math.floor(inv*12)%2===0)return;
+  ctx.save();
+  ctx.translate(player.x,player.y);
+  ctx.drawImage(avatar,0,0,player.w,player.h);
+  ctx.restore();
+}
+
+function update(dt){
+  gameTime+=dt;
+  level=Math.min(100,1+Math.floor(score/80));
+  const speed=270;
+  if(keys.left) player.vx=-speed;
+  else if(keys.right) player.vx=speed;
+  else player.vx*=0.86;
+  player.x+=player.vx*dt;
+  player.x=Math.max(12,Math.min(W-player.w-12,player.x));
+
+  spawn-=dt;
+  const interval=Math.max(.38,1.05-level*.005);
+  if(spawn<=0){spawn=interval;spawnObstacle();}
+
+  for(let i=obstacles.length-1;i>=0;i--){
+    const o=obstacles[i]; o.y+=o.speed*dt;
+    if(o.y>H+40){obstacles.splice(i,1);score+=12;continue;}
+    if(inv<=0 && hit(player,o)){
+      obstacles.splice(i,1);lives--;inv=1.35;burst(player.x+55,player.y+45);
+      if(lives<=0){running=false;showEnd(false);}
+    }
+  }
+  inv=Math.max(0,inv-dt);
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;
+    if(p.life<=0)particles.splice(i,1);
+  }
+  score+=dt*5;
+  if(level>=100){running=false;showEnd(true);}
+  updateHUD();
+}
+
+function draw(){
+  drawBackground(0.016);
+  // Portal glints / foreground energy.
+  ctx.globalAlpha=.16+Math.sin(gameTime*3)*.05;
+  ctx.strokeStyle='#7de9ff';ctx.lineWidth=5;
+  ctx.beginPath();ctx.ellipse(270,560,150,245,0,0,Math.PI*2);ctx.stroke();
+  ctx.globalAlpha=1;
+  for(const o of obstacles)drawPixelPiece(o);
+  drawAvatar();
+  for(const p of particles){
+    ctx.globalAlpha=Math.max(0,p.life*2);ctx.fillStyle='#ffd65a';ctx.fillRect(p.x,p.y,4,4);
+  }
+  ctx.globalAlpha=1;
+}
+
+function loop(t){
+  if(!running){draw();return;}
+  const dt=Math.min(.033,(t-last)/1000);last=t;
+  update(dt);draw();requestAnimationFrame(loop);
+}
+
+function showEnd(win){
+  const ov=document.getElementById('overlay');
+  ov.style.display='flex';
+  ov.querySelector('.panel').innerHTML=
+    `<h1>${win?'PORTAL CLEARED!':'GAME OVER'}</h1>
+     <p>${win?'Level 100 erreicht. Du hast die Welt hinter dem Portal erreicht!':'Die Blöcke haben dich erwischt.'}</p>
+     <p><strong>SCORE ${String(Math.floor(score)).padStart(6,'0')}</strong></p>
+     <button id="restart">PLAY AGAIN</button>`;
+  document.getElementById('restart').onclick=startGame;
+}
+
+function setDirection(x){
+  const mid=canvas.getBoundingClientRect().left+canvas.getBoundingClientRect().width/2;
+  keys.left=x<mid; keys.right=x>=mid;
+}
+canvas.addEventListener('pointerdown',e=>{e.preventDefault();setDirection(e.clientX);});
+canvas.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch'){e.preventDefault();setDirection(e.clientX);}});
+window.addEventListener('pointerup',()=>{keys.left=keys.right=false;});
+window.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')keys.left=true;if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')keys.right=true;if(e.code==='Space'&&!running)startGame();});
+window.addEventListener('keyup',e=>{if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a')keys.left=false;if(e.key==='ArrowRight'||e.key.toLowerCase()==='d')keys.right=false;});
+
+// Tap zones for reliable mobile controls.
+document.getElementById('leftZone').addEventListener('pointerdown',()=>keys.left=true);
+document.getElementById('rightZone').addEventListener('pointerdown',()=>keys.right=true);
+window.addEventListener('pointerup',()=>{keys.left=keys.right=false;});
+</script>
+</body>
+</html>
