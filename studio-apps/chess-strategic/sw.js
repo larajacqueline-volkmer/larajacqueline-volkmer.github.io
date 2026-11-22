@@ -1,5 +1,5 @@
 const prefix = "ljv-portfolio-chess-strategic-";
-const cacheName = prefix + "b5f53e5857";
+const cacheName = prefix + "43dfe0f085";
 const assets = [
   "./app.js",
   "./assets/apple-touch-icon.png",
@@ -9,6 +9,7 @@ const assets = [
   "./assets/icon-512.png",
   "./index.html",
   "./manifest.webmanifest",
+  "./preview.webp",
   "./pwa-register.js",
   "./pwa.js",
   "./strategies.js",

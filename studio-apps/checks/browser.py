@@ -3,7 +3,7 @@ from PIL import Image
 from io import BytesIO
 from pathlib import Path
 import json,shutil
-apps=['pianoflow','chess-strategic','portal-run','memoria','vocara','mindmap']
+apps=['pianoflow','chess-strategic','portal-run','memoria','vocara','mindmap','studytown3d']
 def use(page,app):
  tap=lambda selector:page.locator(selector).first.tap(timeout=3000)
  if app=='portal-run':
@@ -16,10 +16,21 @@ def use(page,app):
   page.goto(page.url.rsplit('/',1)[0]+'/learn.html');tap('#start-session');tap('#show-answer');assert page.locator('#learn-answer').is_visible();tap('[data-grade=good]');assert int(page.locator('#user-xp-current').inner_text())>=4
  if app=='vocara':
   page.goto(page.url.rsplit('/',1)[0]+'/add.html');page.locator('#word-de').fill('Mond');page.locator('#word-foreign').fill('moon');tap('button[type=submit]');assert page.evaluate("JSON.parse(localStorage.getItem('ljv-studio-vicara-v4')).some(w=>w.foreign==='moon')");page.goto(page.url.replace('add.html','index.html'));tap('.vocab-card');assert page.locator('.vocab-card.flipped').count()
+ if app=='studytown3d':
+  page.wait_for_function("document.querySelector('#moduleSelect').options.length>5")
+  page.locator('#moduleSelect').select_option('0')
+  page.locator('#pNotes').fill('Browser-Test')
+  page.locator('#pCheckInput').fill('Kapitel wiederholen')
+  tap('#pCheckAdd');tap('#pSave');page.reload()
+  page.wait_for_function("document.querySelector('#moduleSelect').options.length>5")
+  page.locator('#moduleSelect').select_option('0')
+  assert page.locator('#pNotes').input_value()=='Browser-Test'
+  assert page.locator('#pChecks').inner_text().find('Kapitel wiederholen')>=0
+  tap('#pClose')
  if app=='mindmap':
   tap('#newNode');page.locator('#nodeTitle').fill('Entwurf');tap('#editor button');page.reload();assert page.locator('#nodeTitle').input_value()=='Entwurf';tap('#newNode');tap('#undo');assert page.evaluate("JSON.parse(localStorage.getItem('ljv-studio-map-v1')).nodes.length")==2
 with sync_playwright() as pw:
- br=pw.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox'])
+ br=pw.chromium.launch(executable_path=shutil.which('google-chrome') or shutil.which('chromium'),args=['--no-sandbox','--enable-webgl','--use-angle=swiftshader','--enable-unsafe-swiftshader'])
  failures=[]
  for a in apps:
   ctx=br.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True);p=ctx.new_page();p.set_default_timeout(4500);errors=[];p.on('pageerror',lambda e:errors.append(str(e)));p.on('dialog',lambda dialog:dialog.accept());url='http://127.0.0.1:8193/'+a+'/index.html'
@@ -28,6 +39,8 @@ with sync_playwright() as pw:
    m=p.evaluate("async()=>await (await fetch(document.querySelector('link[rel=manifest]').href)).json()")
    for icon in m['icons']:
     im=Image.open(BytesIO(ctx.request.get(url.rsplit('/',1)[0]+'/'+icon['src']).body()));assert im.size==(int(icon['sizes'].split('x')[0]),)*2
+   
+   if a=='studytown3d': p.wait_for_function("document.querySelector('#moduleSelect').options.length>5")
    p.evaluate('window.scrollTo(0,0)');ctx.set_offline(True);p.reload();use(p,a);assert not errors,errors
    ctx.set_offline(False); p.goto(url);p.set_viewport_size({'width':1080,'height':760});p.wait_for_timeout(300)
    if a=='portal-run':p.locator('#start').click();p.wait_for_timeout(600)

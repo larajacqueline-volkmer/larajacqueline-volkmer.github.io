@@ -1,5 +1,5 @@
 const prefix = "ljv-portfolio-pianoflow-";
-const cacheName = prefix + "280f0a5534";
+const cacheName = prefix + "24fa13b984";
 const assets = [
   "./404.html",
   "./app.js",
@@ -9,6 +9,7 @@ const assets = [
   "./icon-512.png",
   "./index.html",
   "./manifest.webmanifest",
+  "./preview.webp",
   "./pwa-register.js",
   "./style.css"
 ];

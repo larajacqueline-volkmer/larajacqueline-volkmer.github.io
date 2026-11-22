@@ -1014,3 +1014,8 @@ audioPlayer.volume = 1;
 
 // Keep custom song metadata in sync.
 window.addEventListener('beforeunload',()=>{persistCustomMeta();saveSettings();});
+
+// Pause practice when the app leaves the foreground.
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden && state.playing) togglePlay(false);
+});
