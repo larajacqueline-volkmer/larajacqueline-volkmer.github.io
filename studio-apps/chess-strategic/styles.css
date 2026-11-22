@@ -375,3 +375,13 @@ main{max-width:1900px;margin:auto;padding:28px 22px 60px}.view{display:none}.vie
   .mode4d .holo-frame{transform:rotateX(59deg) rotateZ(var(--rot,0deg)) translateY(6%) translateZ(12px)}
   .mode4d .pc{transform:translate(-50%,-50%) translateZ(13px) rotateX(-59deg)}
 }
+
+@media (max-width: 760px) {
+  html { scroll-behavior: auto; scroll-padding-top: 84px; scroll-padding-bottom: 100px; }
+  .desktop-hero > * { min-width: 0; width: 100%; }
+  .control-panel { position: relative; display: flex; flex-direction: column; }
+  .control-panel > * { position: relative; min-height: 64px; }
+  .segmented { flex-wrap: wrap; }
+  .choice { min-height: 44px; }
+  button { scroll-margin-top: 90px; scroll-margin-bottom: 110px; }
+}

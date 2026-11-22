@@ -1,5 +1,5 @@
 const prefix = "ljv-portfolio-chess-strategic-";
-const cacheName = prefix + "703ef8e00f";
+const cacheName = prefix + "b5f53e5857";
 const assets = [
   "./app.js",
   "./assets/apple-touch-icon.png",
