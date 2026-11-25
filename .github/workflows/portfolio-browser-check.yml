@@ -1,7 +1,7 @@
 name: Portfolio browser checks
 on:
   push:
-    branches: [portfolio-pwa-check-20261122, portfolio-study-upgrade-20261122]
+    branches: [portfolio-pwa-check-20261122, portfolio-study-upgrade-20261122, portfolio-focus-20261125]
 permissions:
   contents: read
 jobs:
@@ -19,3 +19,4 @@ jobs:
         with:
           name: portfolio-previews
           path: studio-apps/*/preview.webp
+

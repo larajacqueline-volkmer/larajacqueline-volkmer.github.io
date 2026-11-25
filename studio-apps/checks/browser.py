@@ -3,9 +3,28 @@ from PIL import Image
 from io import BytesIO
 from pathlib import Path
 import json,shutil
-apps=['pianoflow','chess-strategic','portal-run','memoria','vocara','mindmap','studytown3d']
+apps=['pianoflow','chess-strategic','portal-run','memoria','vocara','mindmap','studytown3d','focus-timer']
 def use(page,app):
  tap=lambda selector:page.locator(selector).first.tap(timeout=3000)
+ if app=='focus-timer':
+  page.clock.install()
+  tap('#soundBtn')
+  page.locator('#customMinutes').fill('1')
+  tap('#applyCustomBtn')
+  tap('#startBtn')
+  assert page.locator('#pauseBtn').is_enabled()
+  page.clock.fast_forward(12000)
+  tap('#pauseBtn')
+  paused=page.locator('#time').inner_text()
+  assert paused.startswith('00:') and paused != '00:00'
+  page.clock.fast_forward(6000)
+  assert page.locator('#time').inner_text()==paused
+  tap('#startBtn')
+  page.clock.fast_forward(65000)
+  assert page.locator('#sessionsLabel').inner_text()=='Sitzungen: 1'
+  tap('#resetBtn')
+  assert page.locator('#time').inner_text()=='01:00'
+  assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
  if app=='portal-run':
   tap('#start');page.wait_for_function("document.querySelector('#overlay').style.display==='none'");page.wait_for_function("Number(document.querySelector('#score').textContent.replace(/[^0-9]/g,''))>0");tap('#leftZone')
  if app=='chess-strategic':
@@ -50,3 +69,4 @@ with sync_playwright() as pw:
   ctx.close()
  br.close()
  if failures: raise SystemExit('Failed: '+', '.join(failures))
+

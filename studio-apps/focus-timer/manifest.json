@@ -1,0 +1,31 @@
+{
+  "id": "./",
+  "name": "Flow Focus Timer by LJV",
+  "short_name": "Flow Focus",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#070810",
+  "theme_color": "#070810",
+  "description": "Visueller Fokus-Timer im Neon-Look von LJV.",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Flow Focus Timer by LJV</title>
+  <meta name="theme-color" content="#070810" />
+  <meta name="description" content="Visueller, installierbarer Fokus-Timer im Neon-Look." />
+  <meta name="color-scheme" content="dark" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
+
+  <link rel="icon" type="image/png" sizes="32x32" href="icon-32.png" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+</head>
+<body>
+  <div class="app-shell">
+    <main class="app-container" aria-label="Flow Focus Timer">
+      <div class="ambient ambient-1"></div>
+      <div class="ambient ambient-2"></div>
+
+      <div class="top-bar">
+        <div class="brand-chip" id="appNameLabel">Flow Focus Timer by LJV</div>
+        <div class="top-toggles">
+          <button id="soundBtn" class="mini-toggle" type="button" aria-pressed="true">Sound: An</button>
+          <button id="glowBtn" class="mini-toggle" type="button" aria-pressed="true">Glow: Stark</button>
+        </div>
+      </div>
+
+      <img src="hourglass.webp" alt="Neon Sanduhr" class="hero-icon" />
+
+      <div class="timer-display" id="time" role="timer" aria-live="off" aria-atomic="true">25:00</div>
+      <div class="status-text" id="statusText" aria-live="polite">Bereit</div>
+
+      <div class="progress-wrap" aria-hidden="true">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <section class="preset-grid" id="presetGrid" aria-label="Schnellwahl Minuten"></section>
+
+      <section class="custom-row" aria-label="Eigene Minuten festlegen">
+        <label for="customMinutes">Minuten</label>
+        <input id="customMinutes" type="number" min="1" max="180" inputmode="numeric" value="25" />
+        <button id="applyCustomBtn" class="btn-outline small-btn" type="button">Setzen</button>
+      </section>
+
+      <div class="controls" role="group" aria-label="Timer-Steuerung">
+        <button id="startBtn" class="btn-blue" type="button">Start</button>
+        <button id="pauseBtn" class="btn-dark" type="button">Pause</button>
+        <button id="resetBtn" class="btn-pink" type="button">Reset</button>
+      </div>
+
+      <div class="hint">
+        Leertaste = Start/Pause • R = Reset
+      </div>
+
+      <div class="footer-bar">
+        <div class="footer-chip" id="sessionsLabel">Sitzungen: 0</div>
+        <div class="footer-chip" id="modeLabel">Stark Glow</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
