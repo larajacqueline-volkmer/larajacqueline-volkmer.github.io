@@ -3,9 +3,23 @@ from PIL import Image
 from io import BytesIO
 from pathlib import Path
 import json,shutil
-apps=['pianoflow','chess-strategic','portal-run','memoria','vocara','mindmap','studytown3d','focus-timer']
+apps=['pianoflow','chess-strategic','portal-run','memoria','vocara','mindmap','studytown3d','focus-timer','vocabit']
 def use(page,app):
  tap=lambda selector:page.locator(selector).first.tap(timeout=3000)
+ if app=='vocabit':
+  tap('#hintBtn')
+  assert 'Tipp' in page.locator('#text').inner_text()
+  answers={'language':'Sprache','ambition':'Ehrgeiz','knowledge':'Wissen','practice':'Übung','the gate':'Das Tor','communication':'Kommunikation'}
+  page.locator('#germanText').fill(answers[page.locator('#word').inner_text()])
+  tap('#quizForm button[type=submit]')
+  assert int(page.locator('#xpValue').inner_text()) >= 10
+  page.goto(page.url.replace('index.html','add.html'))
+  page.locator('#germanText').fill('Mond')
+  page.locator('#englishText').fill('moon')
+  tap('#addForm button[type=submit]')
+  page.reload()
+  assert 'Mond' in page.locator('#vocabularyList').inner_text()
+  assert page.evaluate('document.documentElement.scrollWidth <= innerWidth')
  if app=='focus-timer':
   page.clock.install()
   tap('#soundBtn')

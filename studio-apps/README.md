@@ -13,3 +13,5 @@
 
 
 * [Flow Focus Timer](./focus-timer/) · Fokuszeiten einstellen, pausieren und Sitzungen zählen.
+
+* [Vocabit](./vocabit/) · Übersetzungen im Tippquiz üben und eigene Wortpaare ergänzen.
